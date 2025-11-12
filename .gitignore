@@ -1,0 +1,4 @@
+kivy_env_new/
+__pycache__/
+*.pyc
+*.pyo   
