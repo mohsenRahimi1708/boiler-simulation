@@ -1,0 +1,9 @@
+spray:
+  angle: 45
+  pressure: 12
+  flow_rate: 0.8
+
+boiler:
+  steam_temperature: 520
+  steam_pressure: 160
+  fuel_flow_rate: 3.5
