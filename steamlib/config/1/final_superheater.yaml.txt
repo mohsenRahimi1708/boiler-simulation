@@ -1,0 +1,42 @@
+final_superheater:
+  structure:
+    n_coils: 43  # Coils (panels)
+    tubes_per_coil: 4  # Parallel tubes per coil
+    passes_per_coil: 13  # Horizontal passes (updated)
+    pass_length_m: 6.0  # Length per pass (no bends)
+    total_length_m: 85.0  # Total per tube (13 x 6 + ~7 m bends, updated)
+    total_tube_count: 172  # 43 x 4
+    header_length_m: 15.0  # Headers
+  elevation:
+    inlet_header_elevation_m: 40.0  # Bottom inlet (upflow)
+    outlet_header_elevation_m: 42.0  # Top outlet
+    height_difference_m: 2.0
+  sections:
+    - name: casing_1
+      color: yellow
+      length_m: 1.0
+      material: "12Cr1MoV"  # Non-radiant
+    - name: casing_2
+      color: orange
+      length_m: 2.0
+      material: "12Cr2MoWVTiB"  # Intermediate
+    - name: radiant
+      color: green
+      length_m: 18.0
+      material: "SA-213 T91"  # T91 for radiant (updated)
+    - name: upper
+      color: orange
+      length_m: 20.0
+      material: "12Cr2MoWVTiB"  # Convective
+    - name: lower
+      color: blue
+      length_m: 30.0
+      material: "12Cr2MoWVTiB"  # Convective
+    - name: casing_3
+      color: purple
+      length_m: 14.0  # Adjusted to total 85 m
+      material: "12Cr1MoV"  # Non-radiant
+  thermal:
+    U_W_m2K_low_load: 900.0  # HTC low load (convective)
+    setpoint_inlet_C: 410.0  # From SP2
+    setpoint_outlet_C: 540.0  # To HP turbine

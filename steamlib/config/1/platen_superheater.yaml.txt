@@ -1,0 +1,38 @@
+platen_superheater:
+  structure:
+    n_panels: 43  # Panels (coils)
+    tubes_per_panel: 4  # Parallel tubes per panel
+    passes_per_panel: 8  # Horizontal passes (forward/back)
+    pass_length_m: 6.0  # Length per pass (no bends)
+    total_length_m: 50.0  # Total per tube (incl. ~2 m bends)
+    total_tube_count: 172  # 43 x 4
+    header_length_m: 15.0  # Headers
+  elevation:
+    inlet_header_elevation_m: 34.774  # Top inlet (downflow)
+    outlet_header_elevation_m: 31.880  # Bottom outlet
+    height_difference_m: 2.894  # ~3 m approx.
+  sections:
+    - name: inlet_casing
+      color: red
+      length_m: 2.5
+      material: "12Cr1MoV"  # Non-radiant
+    - name: upper_horizontal
+      color: green
+      length_m: 12.0
+      material: "12Cr2MoWVTiB"  # Intermediate
+    - name: lower_vertical
+      color: orange
+      length_m: 20.0
+      material: "12Cr2MoWVTiB"  # Convective
+    - name: radiant_section
+      color: purple
+      length_m: 15.0
+      material: "SA-213 T91"  # T91 for radiant (updated)
+    - name: outlet_casing
+      color: yellow
+      length_m: 0.5
+      material: "12Cr1MoV"  # Non-radiant
+  thermal:
+    U_W_m2K_low_load: 800.0  # HTC low load
+    setpoint_inlet_C: 350.0  # SP1 setpoint
+    setpoint_outlet_C: 410.0  # SP2 setpoint

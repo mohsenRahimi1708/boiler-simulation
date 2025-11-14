@@ -1,0 +1,280 @@
+# Boiler and Superheater System Configuration
+# 1000 t/h Natural Circulation Drum Boiler
+# Operating at 540°C, 167 bar
+
+boiler_system:
+  general:
+    name: "1000 t/h Natural Circulation Drum Boiler"
+    type: "Natural Circulation Drum Type"
+    capacity_t_h: 1000
+    outlet_pressure_bar: 167
+    outlet_temperature_C: 540
+    passes: 2
+    
+  drum:
+    type: "Steam Drum"
+    function: "Steam-Water Separation"
+    feedwater_source: "Feedwater Pumps"
+    circulation: "Natural Circulation"
+    
+  flow_path:
+    - step: 1
+      description: "Feedwater enters drum from feedwater pumps"
+      component: "drum_inlet"
+    - step: 2
+      description: "Water circulates naturally to furnace walls"
+      component: "natural_circulation"
+    - step: 3
+      description: "Saturated steam generated in furnace walls"
+      component: "evaporation"
+    - step: 4
+      description: "Steam returns to drum for separation"
+      component: "steam_separation"
+    - step: 5
+      description: "Saturated steam goes to Low Temperature Superheater"
+      component: "to_LTSH"
+    - step: 6
+      description: "Steam heated in Low Temperature Superheater (Pass 2)"
+      component: "LTSH_heating"
+    - step: 7
+      description: "Stage 1 spray injection after LTSH outlet"
+      component: "stage1_spray"
+    - step: 8
+      description: "Steam enters Platen Superheater inlet header"
+      component: "platen_inlet_header"
+    - step: 9
+      description: "Steam heated in Platen Superheater (Pass 1)"
+      component: "platen_heating"
+    - step: 10
+      description: "Steam exits Platen Superheater outlet header"
+      component: "platen_outlet_header"
+    - step: 11
+      description: "Stage 2 spray injection between Platen and Final SH"
+      component: "stage2_spray"
+    - step: 12
+      description: "Steam enters Final Superheater inlet header"
+      component: "final_SH_inlet_header"
+    - step: 13
+      description: "Steam heated in Final Superheater (Pass 1)"
+      component: "final_SH_heating"
+    - step: 14
+      description: "Steam exits Final Superheater outlet header to HP turbine"
+      component: "to_HP_turbine"
+    - step: 15
+      description: "Steam returns from HP turbine to Reheater"
+      component: "to_reheater"
+    - step: 16
+      description: "Steam reheated and sent to LP turbine at 34 bar"
+      component: "to_LP_turbine"
+
+  pass_configuration:
+    pass_1:
+      location: "Upper Pass"
+      components:
+        - "Platen Superheater"
+        - "Reheater"
+        - "Final Superheater"
+      flow_direction: "Bottom to Top"
+      
+    pass_2:
+      location: "Lower Pass"
+      components:
+        - "Low Temperature Superheater"
+      flow_direction: "Bottom to Top"
+
+  spray_control_system:
+    stage1_spray:
+      name: "Course Spray"
+      location: "After LTSH outlet, before Platen SH inlet header"
+      purpose: "Control Platen Superheater outlet temperature"
+      control_setpoint: "Platen SH outlet temperature"
+      feedwater_source: "Feedpumps"
+      pressure_condition: "Always above steam pressure"
+      water_state: "Condensate"
+      
+    stage2_spray:
+      name: "Fine Spray"
+      location: "Between Platen SH outlet and Final SH inlet"
+      purpose: "Control Final Superheater outlet temperature"
+      control_setpoint: "Final SH outlet temperature (540°C)"
+      feedwater_source: "Feedpumps"
+      pressure_condition: "Always above steam pressure"
+      water_state: "Condensate"
+
+# Platen Superheater Configuration (Updated)
+platen_superheater:
+  structure:
+    n_panels: 43
+    tubes_per_panel: 4
+    passes_per_panel: 8
+    pass_length_m: 6.0
+    total_length_m: 50.0
+    total_tube_count: 172
+    header_length_m: 12.0
+    
+  headers:
+    inlet_header:
+      name: "Platen Inlet Header"
+      length_m: 12.0
+      diameter_mm: 400
+      wall_thickness_mm: 30
+      material: "12Cr1MoV"
+      flow_configuration: "dual_outlet"
+      connection: "From LTSH via two pipes"
+      
+    outlet_header:
+      name: "Platen Outlet Header"
+      length_m: 12.0
+      diameter_mm: 400
+      wall_thickness_mm: 30
+      material: "12Cr1MoV"
+      flow_configuration: "dual_inlet"
+      connection: "To Final SH via two pipes"
+      
+  elevation:
+    inlet_header_elevation_m: 34.774
+    outlet_header_elevation_m: 31.880
+    height_difference_m: 2.894
+    
+  sections:
+    - name: inlet_casing
+      color: red
+      length_m: 2.5
+      material: "12Cr1MoV"
+    - name: upper_horizontal
+      color: green
+      length_m: 12.0
+      material: "12Cr2MoWVTiB"
+    - name: lower_vertical
+      color: orange
+      length_m: 20.0
+      material: "12Cr2MoWVTiB"
+    - name: radiant_section
+      color: purple
+      length_m: 15.0
+      material: "SA-213 T91"
+    - name: outlet_casing
+      color: yellow
+      length_m: 0.5
+      material: "12Cr1MoV"
+      
+  thermal:
+    U_W_m2K_low_load: 800.0
+    setpoint_inlet_C: 350.0  # Controlled by stage1 spray
+    setpoint_outlet_C: 410.0  # Target outlet temperature
+
+# Final Superheater Configuration (Updated)
+final_superheater:
+  structure:
+    n_coils: 43
+    tubes_per_coil: 4
+    passes_per_coil: 13
+    pass_length_m: 6.0
+    total_length_m: 85.0
+    total_tube_count: 172
+    header_length_m: 12.0
+    
+  headers:
+    inlet_header:
+      name: "Final SH Inlet Header"
+      length_m: 12.0
+      diameter_mm: 400
+      wall_thickness_mm: 30
+      material: "12Cr1MoV"
+      flow_configuration: "dual_inlet"
+      connection: "From Platen SH via two pipes"
+      
+    outlet_header:
+      name: "Final SH Outlet Header"
+      length_m: 12.0
+      diameter_mm: 400
+      wall_thickness_mm: 30
+      material: "12Cr1MoV"
+      flow_configuration: "single_outlet"
+      connection: "To HP turbine"
+      
+  elevation:
+    inlet_header_elevation_m: 40.0
+    outlet_header_elevation_m: 42.0
+    height_difference_m: 2.0
+    
+  sections:
+    - name: casing_1
+      color: yellow
+      length_m: 1.0
+      material: "12Cr1MoV"
+    - name: casing_2
+      color: orange
+      length_m: 2.0
+      material: "12Cr2MoWVTiB"
+    - name: radiant
+      color: green
+      length_m: 18.0
+      material: "SA-213 T91"
+    - name: upper
+      color: orange
+      length_m: 20.0
+      material: "12Cr2MoWVTiB"
+    - name: lower
+      color: blue
+      length_m: 30.0
+      material: "12Cr2MoWVTiB"
+    - name: casing_3
+      color: purple
+      length_m: 14.0
+      material: "12Cr1MoV"
+      
+  thermal:
+    U_W_m2K_low_load: 900.0
+    setpoint_inlet_C: 410.0  # Controlled by stage2 spray
+    setpoint_outlet_C: 540.0  # To HP turbine
+
+# Low Temperature Superheater Configuration
+low_temperature_superheater:
+  location: "Pass 2"
+  function: "Initial steam superheating"
+  inlet_condition: "Saturated steam from drum"
+  outlet_condition: "Superheated steam to Platen SH"
+  spray_location: "After LTSH outlet"
+
+# Reheater Configuration
+reheater:
+  location: "Pass 1"
+  function: "Reheat steam from HP turbine exhaust"
+  inlet_pressure_bar: 34
+  inlet_temperature_C: "HP turbine exhaust"
+  outlet_temperature_C: "To LP turbine"
+  material: "T91 and 12Cr2MoWVTiB"
+
+# Control Philosophy
+control_philosophy:
+  temperature_control:
+    primary: "Stage 2 spray for final temperature (540°C)"
+    secondary: "Stage 1 spray for platen outlet temperature"
+    cascade: "Fine spray trims final temperature, course spray handles major deviations"
+    
+  pressure_control:
+    drum_pressure: "167 bar maintained"
+    spray_water_pressure: "Always above steam pressure"
+    
+  safety:
+    spray_water: "Always condensate condition"
+    pressure_margin: "Positive differential maintained"
+    material_temperature: "Within design limits"
+
+# Material Specifications
+materials:
+  "12Cr1MoV":
+    application: "Non-radiant sections, headers"
+    max_temperature_C: 580
+    properties: "Good creep strength"
+    
+  "12Cr2MoWVTiB":
+    application: "Intermediate temperature sections"
+    max_temperature_C: 600
+    properties: "High temperature strength"
+    
+  "SA-213 T91":
+    application: "Radiant sections"
+    max_temperature_C: 650
+    properties: "Excellent creep resistance"
