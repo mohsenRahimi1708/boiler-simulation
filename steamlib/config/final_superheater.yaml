@@ -1,42 +1,65 @@
+# Final Superheater Configuration (Updated)
 final_superheater:
   structure:
-    n_coils: 43  # Coils (panels)
-    tubes_per_coil: 4  # Parallel tubes per coil
-    passes_per_coil: 13  # Horizontal passes (updated)
-    pass_length_m: 6.0  # Length per pass (no bends)
-    total_length_m: 85.0  # Total per tube (13 x 6 + ~7 m bends, updated)
-    total_tube_count: 172  # 43 x 4
-    header_length_m: 15.0  # Headers
+    n_coils: 43
+    tubes_per_coil: 4
+    passes_per_coil: 13
+    pass_length_m: 6.0
+    total_length_m: 85.0
+    total_tube_count: 172
+    header_length_m: 12.0
+    
+  headers:
+    inlet_header:
+      name: "Final SH Inlet Header"
+      length_m: 12.0
+      diameter_mm: 400
+      wall_thickness_mm: 30
+      material: "12Cr1MoV"
+      flow_configuration: "dual_inlet"
+      connection: "From Platen SH via two pipes"
+      
+    outlet_header:
+      name: "Final SH Outlet Header"
+      length_m: 12.0
+      diameter_mm: 400
+      wall_thickness_mm: 30
+      material: "12Cr1MoV"
+      flow_configuration: "single_outlet"
+      connection: "To HP turbine"
+      
   elevation:
-    inlet_header_elevation_m: 40.0  # Bottom inlet (upflow)
-    outlet_header_elevation_m: 42.0  # Top outlet
+    inlet_header_elevation_m: 40.0
+    outlet_header_elevation_m: 42.0
     height_difference_m: 2.0
+    
   sections:
     - name: casing_1
       color: yellow
       length_m: 1.0
-      material: "12Cr1MoV"  # Non-radiant
+      material: "12Cr1MoV"
     - name: casing_2
       color: orange
       length_m: 2.0
-      material: "12Cr2MoWVTiB"  # Intermediate
+      material: "12Cr2MoWVTiB"
     - name: radiant
       color: green
       length_m: 18.0
-      material: "SA-213 T91"  # T91 for radiant (updated)
+      material: "SA-213 T91"
     - name: upper
       color: orange
       length_m: 20.0
-      material: "12Cr2MoWVTiB"  # Convective
+      material: "12Cr2MoWVTiB"
     - name: lower
       color: blue
       length_m: 30.0
-      material: "12Cr2MoWVTiB"  # Convective
+      material: "12Cr2MoWVTiB"
     - name: casing_3
       color: purple
-      length_m: 14.0  # Adjusted to total 85 m
-      material: "12Cr1MoV"  # Non-radiant
+      length_m: 14.0
+      material: "12Cr1MoV"
+      
   thermal:
-    U_W_m2K_low_load: 900.0  # HTC low load (convective)
-    setpoint_inlet_C: 410.0  # From SP2
+    U_W_m2K_low_load: 900.0
+    setpoint_inlet_C: 410.0  # Controlled by stage2 spray
     setpoint_outlet_C: 540.0  # To HP turbine

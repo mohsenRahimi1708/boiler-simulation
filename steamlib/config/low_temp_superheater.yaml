@@ -1,0 +1,8 @@
+
+# Low Temperature Superheater Configuration
+low_temperature_superheater:
+  location: "Pass 2"
+  function: "Initial steam superheating"
+  inlet_condition: "Saturated steam from drum"
+  outlet_condition: "Superheated steam to Platen SH"
+  spray_location: "After LTSH outlet"
